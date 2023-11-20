@@ -1,22 +1,38 @@
+import tkinter as tk
+from PIL import ImageGrab
+import pyautogui
 import os
-from PIL import Image
+import datetime
 
-path_dir = 'C:/Users/Mee/Desktop/spilt_screenshot'
-file_list = os.listdir(path_dir)
 
-def crop_saver(dir, name):
-    img = Image.open(f'{dir}/{name}')
-    (w, h) = img.size #(3000, 1920)
-    w = w-h
-    #(x, y, x+자를 넓이, y+자를 높이)
-    a1 = (0, 480, h, w+480)
-    a2 = (h, 0, h+w, h)
-    cropped_a1 = img.crop(a1)
-    cropped_a2 = img.crop(a2)
-    cropped_a1.save(f'{dir}/out/{name[:-4]}1.png')
-    cropped_a2.save(f'{dir}/out/{name[:-4]}2.png')
+def take_screenshot():
+    # 현재 시간을 기반으로 파일 이름 생성
+    filename = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".png"
 
-# exe
-for i in file_list[1:]:
-    crop_saver(path_dir, i)
+    # 스크린샷 촬영
+    screenshot = pyautogui.screenshot()
 
+    # 파일 저장
+    screenshot.save(os.path.join('screenshots', filename))
+
+    # 사용자에게 저장 완료 알림
+    label.config(text="Screenshot Saved: " + filename)
+
+
+# GUI 설정
+root = tk.Tk()
+root.title("Screenshot Spliter")
+
+# 스크린샷 저장 폴더 생성 (없으면)
+if not os.path.exists('screenshots'):
+    os.makedirs('screenshots')
+
+# 버튼과 레이블 추가
+button = tk.Button(root, text="Take Screenshot", command=take_screenshot)
+button.pack(pady=10)
+
+label = tk.Label(root, text="")
+label.pack(pady=10)
+
+# GUI 실행
+root.mainloop()
