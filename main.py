@@ -28,6 +28,9 @@ root.title("Screenshot App")
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
 
+# 기본 창 크기 설정
+root.geometry("200x130")
+
 # 버튼과 레이블 추가
 button = tk.Button(root, text="Take Screenshots", command=take_screenshots)
 button.pack(pady=10)
