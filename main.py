@@ -6,7 +6,13 @@ import datetime
 from PIL import Image
 import time
 
-def take_screenshots():
+def toggle_left_monitor(event=None):
+    left_monitor.set(not left_monitor.get())
+
+def toggle_right_monitor(event=None):
+    right_monitor.set(not right_monitor.get())
+
+def take_screenshots(event=None):
     root.withdraw()
     time.sleep(0.5)
 
@@ -43,7 +49,15 @@ left_monitor_check.pack()
 right_monitor_check = tk.Checkbutton(root, text="Right Monitor (R)", variable=right_monitor)
 right_monitor_check.pack()
 
-button = tk.Button(root, text="Take Screenshots", command=take_screenshots)
+# 단축키 바인딩
+root.bind('<Alt-l>', toggle_left_monitor)
+root.bind('<Alt-L>', toggle_left_monitor)  # 대문자 L에 대한 바인딩도 추가
+root.bind('<Alt-r>', toggle_right_monitor)
+root.bind('<Alt-R>', toggle_right_monitor)  # 대문자 r에 대한 바인딩도 추가
+root.bind('<Alt-z>', take_screenshots)
+root.bind('<Alt-Z>', take_screenshots)  # 대문자 Z에 대한 바인딩도 추가
+
+button = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screenshots)
 button.pack(pady=10)
 
 label = tk.Label(root, text="")
