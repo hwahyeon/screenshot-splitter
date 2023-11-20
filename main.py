@@ -3,40 +3,39 @@ import mss
 import os
 import datetime
 from PIL import Image
+import time
 
 def take_screenshots():
+    # 창 숨기기
+    root.withdraw()
+
+    # 창이 완전히 숨겨진 후 스크린샷을 찍기 위해 잠시 대기
+    time.sleep(0.5)
+
     with mss.mss() as sct:
-        # 모든 모니터에 대한 스크린샷 촬영
-        for monitor_number, monitor in enumerate(sct.monitors[1:], start=1): # 첫 번째 항목(전체 화면)은 제외
+        for monitor_number, monitor in enumerate(sct.monitors[1:], start=1):
             shot = sct.grab(monitor)
             img = Image.frombytes('RGB', (shot.width, shot.height), shot.rgb)
 
-            # 현재 시간을 기반으로 파일 이름 생성
             filename = f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_Monitor_{monitor_number}.png"
-
-            # 파일 저장
             img.save(os.path.join('screenshots', filename))
 
-            # 사용자에게 저장 완료 알림
-            label.config(text=f"Screenshot Saved: Monitor {monitor_number}")
+    # 스크린샷 저장 후 창 다시 표시
+    root.deiconify()
+    label.config(text="Screenshots Saved")
 
 # GUI 설정
 root = tk.Tk()
 root.title("Screenshot App")
+root.geometry("200x130")
 
-# 스크린샷 저장 폴더 생성 (없으면)
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
 
-# 기본 창 크기 설정
-root.geometry("200x130")
-
-# 버튼과 레이블 추가
 button = tk.Button(root, text="Take Screenshots", command=take_screenshots)
 button.pack(pady=10)
 
 label = tk.Label(root, text="")
 label.pack(pady=10)
 
-# GUI 실행
 root.mainloop()
