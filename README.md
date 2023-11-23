@@ -10,7 +10,7 @@ This is a screenshot program designed for dual monitors.
 ### Download
 [Download](https://github.com/hwahyeon/py-screenshot-spliter/raw/main/download/Screenshot%20Spliter.exe)
 
-### 사용 방법
+### How to use
 ![image](./readme/001.png)
 - When you run the `Screenshot Spliter.exe`, the screen will appear like this picture.
 - When the file is executed, `screenshots` folder is created in the location of `Screenshot Spliter.exe`, and screenshots are saved there in chronological order.
