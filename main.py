@@ -7,7 +7,7 @@ from PIL import Image
 import time
 import webbrowser
 
-URL = "https://github.com/hwahyeon/py-screenshot-spliter"
+URL = "https://github.com/hwahyeon/py-screenshot-splitter"
 
 def open_webpage(event=None):
     webbrowser.open(URL)
