@@ -8,7 +8,7 @@
 This is a screenshot program designed for dual monitors.
 
 ### Download
-[Download](https://github.com/hwahyeon/py-screenshot-spliter/raw/main/download/Screenshot%20Spliter.exe)
+[Download](https://github.com/hwahyeon/py-screenshot-spliter/raw/main/download/Screenshot%20Splitter.exe)
 
 ### How to use
 ![image](./readme/001.png)
