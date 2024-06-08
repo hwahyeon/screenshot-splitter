@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import IntVar
+from tkinter import IntVar, Label, Frame
 import mss
 import os
 import datetime
-from PIL import Image
+from PIL import Image, ImageTk
 import time
 import webbrowser
 import platform
@@ -19,9 +19,12 @@ def check_left_monitor(event=None):
 def check_right_monitor(event=None):
     right_monitor.set(not right_monitor.get())
 
+
 def take_screenshots(event=None):
     root.withdraw()
     time.sleep(0.5)
+
+    screenshots = []
 
     with mss.mss() as sct:
         monitors = sct.monitors[1:]  # 첫 번째 항목(전체 화면)은 제외
@@ -30,11 +33,31 @@ def take_screenshots(event=None):
             if (monitor_number == 1 and left_monitor.get()) or (monitor_number == 2 and right_monitor.get()):
                 shot = sct.grab(monitor)
                 img = Image.frombytes('RGB', (shot.width, shot.height), shot.rgb)
+
+                # Preview
+                show_preview(img, monitor_number)
+
                 filename = f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_Monitor_{monitor_number}.png"
                 img.save(os.path.join('screenshots', filename))
 
     root.deiconify()
     label.config(text="Screenshots Saved!")
+    root.after(2000, clear_label)
+
+def clear_label():
+    label.config(text="")
+
+def show_preview(img, monitor_number):
+    for widget in preview_frame.winfo_children():
+        widget.destroy()
+
+    img.thumbnail((300, 300))  # preview size
+
+    img_tk = ImageTk.PhotoImage(img)
+    preview_label = Label(preview_frame, image=img_tk)
+    preview_label.image = img_tk
+    preview_label.pack(side=tk.LEFT, padx=10)
+
 
 def open_folder(event=None):
     folder_path = os.getcwd() + "\\screenshots"
@@ -49,7 +72,7 @@ def open_folder(event=None):
 # GUI setting
 root = tk.Tk()
 root.title("Screenshot App")
-root.geometry("200x180")
+root.geometry("300x450")
 
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
@@ -70,9 +93,11 @@ root.bind('<Alt-r>', check_right_monitor)
 root.bind('<Alt-z>', take_screenshots)
 root.bind('<Alt-o>', open_folder)
 
+# Button (Take Screenshots)
 button1 = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screenshots)
 button1.pack(pady=5)
 
+# Button (Open the folder)
 button2 = tk.Button(root, text="Open the folder (Alt+O)", command=open_folder)
 button2.pack(pady=5)
 
@@ -88,6 +113,11 @@ created_label.pack(side=tk.LEFT)
 name_label = tk.Label(label_frame, text="hwahyeon", fg="blue", cursor="hand2")
 name_label.pack(side=tk.LEFT)
 name_label.bind("<Button-1>", open_webpage)
+
+# Created and positioned preview frames
+global preview_frame
+preview_frame = Frame(root)
+preview_frame.pack(pady=20)
 
 # Saved msg
 label = tk.Label(root, text="")
