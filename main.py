@@ -6,6 +6,7 @@ import datetime
 from PIL import Image
 import time
 import webbrowser
+import platform
 
 URL = "https://github.com/hwahyeon/py-screenshot-splitter"
 
@@ -35,10 +36,20 @@ def take_screenshots(event=None):
     root.deiconify()
     label.config(text="Screenshots Saved!")
 
+def open_folder(event=None):
+    folder_path = os.getcwd() + "\\screenshots"
+
+    if platform.system() == "Windows":
+        os.startfile(folder_path)
+    elif platform.system() == "Darwin":  # macOS
+        os.system(f"open {folder_path}")
+    else:  # Linux
+        os.system(f"xdg-open {folder_path}")
+
 # GUI setting
 root = tk.Tk()
 root.title("Screenshot App")
-root.geometry("200x170")
+root.geometry("200x180")
 
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
@@ -57,9 +68,13 @@ right_monitor_check.pack()
 root.bind('<Alt-l>', check_left_monitor)
 root.bind('<Alt-r>', check_right_monitor)
 root.bind('<Alt-z>', take_screenshots)
+root.bind('<Alt-o>', open_folder)
 
-button = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screenshots)
-button.pack(pady=10)
+button1 = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screenshots)
+button1.pack(pady=5)
+
+button2 = tk.Button(root, text="Open the folder (Alt+O)", command=open_folder)
+button2.pack(pady=5)
 
 # Frame for 2 labels ("Created by" + "Name")
 label_frame = tk.Frame(root)
