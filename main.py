@@ -19,7 +19,6 @@ def check_left_monitor(event=None):
 def check_right_monitor(event=None):
     right_monitor.set(not right_monitor.get())
 
-
 def take_screenshots(event=None):
     root.withdraw()
     time.sleep(0.5)
@@ -27,15 +26,13 @@ def take_screenshots(event=None):
     screenshots = []
 
     with mss.mss() as sct:
-        monitors = sct.monitors[1:]  # 첫 번째 항목(전체 화면)은 제외
+        monitors = sct.monitors[1:]  # sct.monitors[0]: Full screen
 
         for monitor_number, monitor in enumerate(monitors, start=1):
             if (monitor_number == 1 and left_monitor.get()) or (monitor_number == 2 and right_monitor.get()):
                 shot = sct.grab(monitor)
                 img = Image.frombytes('RGB', (shot.width, shot.height), shot.rgb)
-
-                # Preview
-                show_preview(img, monitor_number)
+                screenshots.append((img, monitor_number))
 
                 filename = f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_Monitor_{monitor_number}.png"
                 img.save(os.path.join('screenshots', filename))
@@ -44,20 +41,27 @@ def take_screenshots(event=None):
     label.config(text="Screenshots Saved!")
     root.after(2000, clear_label)
 
-def clear_label():
-    label.config(text="")
-
-def show_preview(img, monitor_number):
+    # Reset preview frame
     for widget in preview_frame.winfo_children():
         widget.destroy()
 
+    for img, monitor_number in screenshots:
+        show_preview(img)
+
+    root.deiconify()
+    label.config(text="Screenshots Saved!")
+    root.after(2000, clear_label)
+
+def clear_label():
+    label.config(text="")
+
+def show_preview(img):
     img.thumbnail((300, 300))  # preview size
 
     img_tk = ImageTk.PhotoImage(img)
     preview_label = Label(preview_frame, image=img_tk)
     preview_label.image = img_tk
     preview_label.pack(side=tk.LEFT, padx=10)
-
 
 def open_folder(event=None):
     folder_path = os.getcwd() + "\\screenshots"
@@ -72,8 +76,9 @@ def open_folder(event=None):
 # GUI setting
 root = tk.Tk()
 root.title("Screenshot App")
-root.geometry("300x450")
+root.geometry("630x340")
 
+# Folder
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
 
