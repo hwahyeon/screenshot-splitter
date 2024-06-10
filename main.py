@@ -15,6 +15,21 @@ URL = "https://github.com/hwahyeon/py-screenshot-splitter"
 def set_app_language(lang):
     global current_language
     current_language = lang
+    update_ui_texts()
+
+def update_ui_texts():
+    # Menu
+    menu_bar.entryconfig(1, label=get_text(current_language, "settings"))
+    menu_bar.entryconfig(2, label=get_text(current_language, "help"))
+    help_menu.entryconfig(0, label=get_text(current_language, "about"))
+    settings_menu.entryconfig(0, label=get_text(current_language, "folder"))
+    settings_menu.entryconfig(1, label=get_text(current_language, "settings"))
+    # settings_menu.entryconfig(2, label=get_text(current_language, "exit"))
+    # label
+    button1.config(text=get_text(current_language, "take"))
+    button2.config(text=get_text(current_language, "open"))
+    left_monitor_check.config(text=get_text(current_language, "left"))
+    right_monitor_check.config(text=get_text(current_language, "right"))
 
 def open_webpage(event=None):
     webbrowser.open(URL)
@@ -44,7 +59,7 @@ def take_screenshots(event=None):
                 img.save(os.path.join('screenshots', filename))
 
     root.deiconify()
-    label.config(text=get_text(current_language, "success"))
+    label.config(text="Screenshots Saved!")
     root.after(2000, clear_label)
 
     # Reset preview frame
@@ -55,7 +70,7 @@ def take_screenshots(event=None):
         show_preview(img)
 
     root.deiconify()
-    label.config(text=get_text(current_language, "success"))
+    label.config(text="Screenshots Saved!")
     root.after(2000, clear_label)
 
 def clear_label():
@@ -117,7 +132,7 @@ def show_about():
                                                "Created by hwahyeon\n"), justify="center")
     about_label.pack(pady=20)
 
-    close_button = tk.Button(about_window, text=get_text(current_language, "close"), command=about_window.destroy)
+    close_button = tk.Button(about_window, text="close", command=about_window.destroy)
     close_button.pack(pady=10)
 
 
@@ -126,7 +141,7 @@ menu_bar = tk.Menu(root)
 
 # 'Settings' Menu
 settings_menu = tk.Menu(menu_bar, tearoff=0)
-settings_menu.add_command(label=get_text(current_language, "folder"), command=change_folder_location)
+settings_menu.add_command(label="Change save folder", command=change_folder_location)
 
 # Language sub menu and check box
 lang_var = tk.StringVar(value="English")
@@ -136,17 +151,17 @@ languages = ["English", "한국어", "Ελληνικά"]
 for lang in languages:
     language_menu.add_radiobutton(label=lang, variable=lang_var, value=lang, command=change_language)
 
-settings_menu.add_cascade(label=get_text(current_language, "language"), menu=language_menu)
+settings_menu.add_cascade(label="Language", menu=language_menu)
 settings_menu.add_separator()
-settings_menu.add_command(label=get_text(current_language, "exit"), command=on_exit)
+settings_menu.add_command(label="Exit", command=on_exit)
 
 # Add 'Settings' menu
-menu_bar.add_cascade(label=get_text(current_language, "settings"), menu=settings_menu)
+menu_bar.add_cascade(label="Settings", menu=settings_menu)
 
 # 'Help' menu
 help_menu = tk.Menu(menu_bar, tearoff=0)
-help_menu.add_command(label=get_text(current_language, "about"), command=show_about)
-menu_bar.add_cascade(label=get_text(current_language, "help"), menu=help_menu)
+help_menu.add_command(label="About", command=show_about)
+menu_bar.add_cascade(label="Help", menu=help_menu)
 
 # Add menu bar
 root.config(menu=menu_bar)
@@ -156,9 +171,9 @@ left_monitor = IntVar()
 right_monitor = IntVar()
 
 # Checkboxs
-left_monitor_check = tk.Checkbutton(root, text=get_text(current_language, "left"), variable=left_monitor)
+left_monitor_check = tk.Checkbutton(root, text="Left Monitor (L)", variable=left_monitor)
 left_monitor_check.pack()
-right_monitor_check = tk.Checkbutton(root, text=get_text(current_language, "right"), variable=right_monitor)
+right_monitor_check = tk.Checkbutton(root, text="Right Monitor (R)", variable=right_monitor)
 right_monitor_check.pack()
 
 # Binding for Shortcuts
@@ -168,11 +183,11 @@ root.bind('<Alt-z>', take_screenshots)
 root.bind('<Alt-o>', open_folder)
 
 # Button (Take Screenshots)
-button1 = tk.Button(root, text=get_text(current_language, "take"), command=take_screenshots)
+button1 = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screenshots)
 button1.pack(pady=5)
 
 # Button (Open the folder)
-button2 = tk.Button(root, text=get_text(current_language, "open"), command=open_folder)
+button2 = tk.Button(root, text="Open the folder (Alt+O)", command=open_folder)
 button2.pack(pady=5)
 
 # Frame for 2 labels ("Created by" + "Name")
