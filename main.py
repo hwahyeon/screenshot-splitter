@@ -75,7 +75,7 @@ def open_folder(event=None):
 
 # GUI setting
 root = tk.Tk()
-root.title("Screenshot App")
+root.title("Screenshot Splitter")
 root.geometry("630x340")
 
 # Folder
