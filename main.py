@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import IntVar, Label, Frame
+from tkinter import IntVar, Label, Frame, messagebox, filedialog
 import mss
 import os
 import datetime
@@ -73,6 +73,8 @@ def open_folder(event=None):
     else:  # Linux
         os.system(f"xdg-open {folder_path}")
 
+
+
 # GUI setting
 root = tk.Tk()
 root.title("Screenshot Splitter")
@@ -81,6 +83,64 @@ root.geometry("630x340")
 # Folder
 if not os.path.exists('screenshots'):
     os.makedirs('screenshots')
+
+def change_folder_location():
+    folder_selected = filedialog.askdirectory()
+    if folder_selected:
+        tk.messagebox.showinfo("Folder Selected", f"Selected folder: {folder_selected}")
+
+
+def change_language():
+    selected_language = lang_var.get()
+    tk.messagebox.showinfo("Language Changed", f"Selected language: {selected_language}")
+
+
+def on_exit():
+    root.quit()
+
+
+def show_about():
+    about_window = tk.Toplevel(root)
+    about_window.title("About")
+    about_window.geometry("190x130")
+
+    about_label = tk.Label(about_window, text=("Screenshot Splitter\n"
+                                               "Created by hwahyeon\n"), justify="center")
+    about_label.pack(pady=20)
+
+    close_button = tk.Button(about_window, text="Close", command=about_window.destroy)
+    close_button.pack(pady=10)
+
+
+# Menu bar
+menu_bar = tk.Menu(root)
+
+# 'Settings' Menu
+settings_menu = tk.Menu(menu_bar, tearoff=0)
+settings_menu.add_command(label="Change save folder", command=change_folder_location)
+
+# Language sub menu and check box
+lang_var = tk.StringVar(value="English")
+language_menu = tk.Menu(settings_menu, tearoff=0)
+languages = ["English", "한국어", "Ελληνικά"]
+
+for lang in languages:
+    language_menu.add_radiobutton(label=lang, variable=lang_var, value=lang, command=change_language)
+
+settings_menu.add_cascade(label="Languages", menu=language_menu)
+settings_menu.add_separator()
+settings_menu.add_command(label="Exit", command=on_exit)
+
+# Add 'Settings' menu
+menu_bar.add_cascade(label="Settings", menu=settings_menu)
+
+# 'Help' menu
+help_menu = tk.Menu(menu_bar, tearoff=0)
+help_menu.add_command(label="About", command=show_about)
+menu_bar.add_cascade(label="Help", menu=help_menu)
+
+# Add menu bar
+root.config(menu=menu_bar)
 
 # Values for Checkbox
 left_monitor = IntVar()
