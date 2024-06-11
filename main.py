@@ -10,7 +10,7 @@ import platform
 from langs import get_text
 
 current_language = "English"
-URL = "https://github.com/hwahyeon/py-screenshot-splitter"
+
 
 def set_app_language(lang):
     global current_language
@@ -122,6 +122,8 @@ def change_language():
 def on_exit():
     root.quit()
 
+URL = "https://github.com/hwahyeon/py-screenshot-splitter"
+
 
 def show_about():
     about_window = tk.Toplevel(root)
@@ -132,7 +134,16 @@ def show_about():
                                                "Created by hwahyeon\n"), justify="center")
     about_label.pack(pady=20)
 
-    close_button = tk.Button(about_window, text="close", command=about_window.destroy)
+    # "Created by"
+    created_label = tk.Label(about_window, text="Created by")
+    created_label.pack(side=tk.LEFT)
+
+    # "Name"
+    name_label = tk.Label(about_window, text="hwahyeon", fg="blue", cursor="hand2")
+    name_label.pack(side=tk.LEFT)
+    name_label.bind("<Button-1>", open_webpage)
+
+    close_button = tk.Button(about_window, text=get_text(current_language, "close"), command=about_window.destroy)
     close_button.pack(pady=10)
 
 
@@ -193,15 +204,6 @@ button2.pack(pady=5)
 # Frame for 2 labels ("Created by" + "Name")
 label_frame = tk.Frame(root)
 label_frame.pack(side=tk.BOTTOM)
-
-# "Created by"
-created_label = tk.Label(label_frame, text="Created by")
-created_label.pack(side=tk.LEFT)
-
-# "Name"
-name_label = tk.Label(label_frame, text="hwahyeon", fg="blue", cursor="hand2")
-name_label.pack(side=tk.LEFT)
-name_label.bind("<Button-1>", open_webpage)
 
 # Created and positioned preview frames
 global preview_frame
