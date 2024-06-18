@@ -47,5 +47,4 @@ translations = {
 }
 
 def get_text(language, text_key):
-    print(language, text_key)
     return translations.get(language, {}).get(text_key, text_key)
