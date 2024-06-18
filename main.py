@@ -10,8 +10,7 @@ import platform
 from langs import get_text
 import sqlite3
 
-# current_language = "English"
-# save_folder = os.path.join(os.getcwd(), "screenshots")
+URL = "https://github.com/hwahyeon/py-screenshot-splitter"
 
 # SQLite
 def init_db():
@@ -55,7 +54,6 @@ init_db()
 current_language = load_setting('current_language', 'English')
 save_folder = load_setting('save_folder', os.path.join(os.getcwd(), 'screenshots'))
 
-
 def set_app_language(lang):
     global current_language
     current_language = lang
@@ -69,13 +67,12 @@ def update_ui_texts():
     help_menu.entryconfig(0, label=get_text(current_language, "about"))
     settings_menu.entryconfig(0, label=get_text(current_language, "folder"))
     settings_menu.entryconfig(1, label=get_text(current_language, "settings"))
-    # settings_menu.entryconfig(2, label=get_text(current_language, "exit"))
+    settings_menu.entryconfig(3, label=get_text(current_language, "exit"))
     # label
     button1.config(text=get_text(current_language, "take"))
     button2.config(text=get_text(current_language, "open"))
     left_monitor_check.config(text=get_text(current_language, "left"))
     right_monitor_check.config(text=get_text(current_language, "right"))
-
 
 def open_webpage(event=None):
     webbrowser.open(URL)
@@ -138,16 +135,6 @@ def open_folder(event=None):
     else:  # Linux
         os.system(f"xdg-open {save_folder}")
 
-
-# GUI setting
-root = tk.Tk()
-root.title("Screenshot Splitter")
-root.geometry("630x340")
-
-# Folder
-if not os.path.exists(save_folder):
-    os.makedirs(save_folder)
-
 def change_folder_location():
     global save_folder
 
@@ -157,18 +144,13 @@ def change_folder_location():
         save_setting('save_folder', save_folder)
         tk.messagebox.showinfo("Folder Selected", f"Selected folder: {save_folder}")
 
-
 def change_language():
     selected_language = lang_var.get()
     set_app_language(selected_language)
     tk.messagebox.showinfo("Language Changed", f"Selected language: {selected_language}")
 
-
 def on_exit():
     root.quit()
-
-URL = "https://github.com/hwahyeon/py-screenshot-splitter"
-
 
 def show_about():
     about_window = tk.Toplevel(root)
@@ -191,6 +173,14 @@ def show_about():
     close_button = tk.Button(about_window, text=get_text(current_language, "close"), command=about_window.destroy)
     close_button.pack(pady=10)
 
+# GUI setting
+root = tk.Tk()
+root.title("Screenshot Splitter")
+root.geometry("630x340")
+
+# Folder
+if not os.path.exists(save_folder):
+    os.makedirs(save_folder)
 
 # Menu bar
 menu_bar = tk.Menu(root)
@@ -198,7 +188,6 @@ menu_bar = tk.Menu(root)
 # 'Settings' Menu
 settings_menu = tk.Menu(menu_bar, tearoff=0)
 settings_menu.add_command(label="Change save folder", command=change_folder_location)
-
 
 # Language sub menu and check box
 lang_var = tk.StringVar(value="English")
