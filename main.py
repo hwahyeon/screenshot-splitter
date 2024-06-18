@@ -56,7 +56,7 @@ def take_screenshots(event=None):
                 screenshots.append((img, monitor_number))
 
                 filename = f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_Monitor_{monitor_number}.png"
-                img.save(os.path.join('screenshots', filename))
+                img.save(os.path.join(save_folder, filename))
 
     root.deiconify()
     label.config(text="Screenshots Saved!")
@@ -85,15 +85,15 @@ def show_preview(img):
     preview_label.pack(side=tk.LEFT, padx=10)
 
 def open_folder(event=None):
-    folder_path = os.getcwd() + "\\screenshots"
-
     if platform.system() == "Windows":
-        os.startfile(folder_path)
+        os.startfile(save_folder)
     elif platform.system() == "Darwin":  # macOS
-        os.system(f"open {folder_path}")
+        os.system(f"open {save_folder}")
     else:  # Linux
-        os.system(f"xdg-open {folder_path}")
+        os.system(f"xdg-open {save_folder}")
 
+# Save folder
+save_folder = os.path.join(os.getcwd(), "screenshots")
 
 
 # GUI setting
@@ -102,20 +102,21 @@ root.title("Screenshot Splitter")
 root.geometry("630x340")
 
 # Folder
-if not os.path.exists('screenshots'):
-    os.makedirs('screenshots')
+if not os.path.exists(save_folder):
+    os.makedirs(save_folder)
 
 def change_folder_location():
+    global save_folder
+
     folder_selected = filedialog.askdirectory()
     if folder_selected:
-        tk.messagebox.showinfo("Folder Selected", f"Selected folder: {folder_selected}")
+        save_folder = folder_selected
+        tk.messagebox.showinfo("Folder Selected", f"Selected folder: {save_folder}")
 
 
 def change_language():
     selected_language = lang_var.get()
     set_app_language(selected_language)
-    print(selected_language)
-    print(current_language)
     tk.messagebox.showinfo("Language Changed", f"Selected language: {selected_language}")
 
 
@@ -153,6 +154,7 @@ menu_bar = tk.Menu(root)
 # 'Settings' Menu
 settings_menu = tk.Menu(menu_bar, tearoff=0)
 settings_menu.add_command(label="Change save folder", command=change_folder_location)
+
 
 # Language sub menu and check box
 lang_var = tk.StringVar(value="English")
