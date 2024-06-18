@@ -8,13 +8,58 @@ import time
 import webbrowser
 import platform
 from langs import get_text
+import sqlite3
 
-current_language = "English"
+# current_language = "English"
+# save_folder = os.path.join(os.getcwd(), "screenshots")
+
+# SQLite
+def init_db():
+    conn = sqlite3.connect('settings.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    ''')
+    if not load_setting('current_language'):
+        c.execute('INSERT INTO settings (key, value) VALUES (?, ?)', ('current_language', 'English'))
+    if not load_setting('save_folder'):
+        c.execute('INSERT INTO settings (key, value) VALUES (?, ?)',
+                  ('save_folder', os.path.join(os.getcwd(), 'screenshots')))
+    conn.commit()
+    conn.close()
+
+def save_setting(key, value):
+    conn = sqlite3.connect('settings.db')
+    c = conn.cursor()
+    c.execute('''
+        INSERT OR REPLACE INTO settings (key, value)
+        VALUES (?, ?)
+    ''', (key, value))
+    conn.commit()
+    conn.close()
+
+def load_setting(key, default=None):
+    conn = sqlite3.connect('settings.db')
+    c = conn.cursor()
+    c.execute('''
+        SELECT value FROM settings WHERE key = ?
+    ''', (key,))
+    result = c.fetchone()
+    conn.close()
+    return result[0] if result else default
+
+init_db()
+current_language = load_setting('current_language', 'English')
+save_folder = load_setting('save_folder', os.path.join(os.getcwd(), 'screenshots'))
 
 
 def set_app_language(lang):
     global current_language
     current_language = lang
+    save_setting('current_language', current_language)
     update_ui_texts()
 
 def update_ui_texts():
@@ -30,6 +75,7 @@ def update_ui_texts():
     button2.config(text=get_text(current_language, "open"))
     left_monitor_check.config(text=get_text(current_language, "left"))
     right_monitor_check.config(text=get_text(current_language, "right"))
+
 
 def open_webpage(event=None):
     webbrowser.open(URL)
@@ -92,9 +138,6 @@ def open_folder(event=None):
     else:  # Linux
         os.system(f"xdg-open {save_folder}")
 
-# Save folder
-save_folder = os.path.join(os.getcwd(), "screenshots")
-
 
 # GUI setting
 root = tk.Tk()
@@ -111,6 +154,7 @@ def change_folder_location():
     folder_selected = filedialog.askdirectory()
     if folder_selected:
         save_folder = folder_selected
+        save_setting('save_folder', save_folder)
         tk.messagebox.showinfo("Folder Selected", f"Selected folder: {save_folder}")
 
 
@@ -215,5 +259,8 @@ preview_frame.pack(pady=20)
 # Saved msg
 label = tk.Label(root, text="")
 label.pack(pady=10)
+
+# UI text update
+update_ui_texts()
 
 root.mainloop()
