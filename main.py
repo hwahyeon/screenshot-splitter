@@ -138,12 +138,13 @@ def change_folder_location():
     if folder_selected:
         save_folder = folder_selected
         save_setting('save_folder', save_folder)
-        tk.messagebox.showinfo("Folder Selected", f"Selected folder: {save_folder}")
+        tk.messagebox.showinfo(get_text(current_language, "folder_change_title"),
+                               (get_text(current_language, "folder_change_cont") + '\n' + save_folder))
 
 def change_language():
     selected_language = lang_var.get()
     set_app_language(selected_language)
-    tk.messagebox.showinfo("Language Changed", f"Selected language: {selected_language}")
+    tk.messagebox.showinfo(get_text(current_language, "lang_change_title"), (get_text(current_language, "lang_change_cont") + selected_language))
 
 def on_exit():
     root.quit()
