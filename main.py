@@ -101,10 +101,6 @@ def take_screenshots(event=None):
                 filename = f"{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_Monitor_{monitor_number}.png"
                 img.save(os.path.join(save_folder, filename))
 
-    root.deiconify()
-    label.config(text="Screenshots Saved!")
-    root.after(2000, clear_label)
-
     # Reset preview frame
     for widget in preview_frame.winfo_children():
         widget.destroy()
@@ -113,7 +109,7 @@ def take_screenshots(event=None):
         show_preview(img)
 
     root.deiconify()
-    label.config(text="Screenshots Saved!")
+    label.config(text=get_text(current_language, "success"))
     root.after(2000, clear_label)
 
 def clear_label():
@@ -154,24 +150,21 @@ def on_exit():
 
 def show_about():
     about_window = tk.Toplevel(root)
-    about_window.title("About")
+    about_window.title(get_text(current_language, "about"))
     about_window.geometry("190x130")
 
     about_label = tk.Label(about_window, text=("Screenshot Splitter\n"
-                                               "Created by hwahyeon\n"), justify="center")
-    about_label.pack(pady=20)
+                                               "v 2.0.0\n"), justify="center")
+    about_label.pack(pady=10)
 
     # "Created by"
-    created_label = tk.Label(about_window, text="Created by")
+    created_label = tk.Label(about_window, text=get_text(current_language, "create"))
     created_label.pack(side=tk.LEFT)
 
     # "Name"
     name_label = tk.Label(about_window, text="hwahyeon", fg="blue", cursor="hand2")
     name_label.pack(side=tk.LEFT)
     name_label.bind("<Button-1>", open_webpage)
-
-    close_button = tk.Button(about_window, text=get_text(current_language, "close"), command=about_window.destroy)
-    close_button.pack(pady=10)
 
 # GUI setting
 root = tk.Tk()

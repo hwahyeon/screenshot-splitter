@@ -11,7 +11,7 @@ translations = {
         "right": "Right Monitor (R)",
         "take": "Take Screenshots (Alt+Z)",
         "open": "Open the folder (Alt+O)",
-        "created": "Created by",
+        "create": "Created by",
         "success": "Screenshots Saved!"
     },
     "한국어": {
@@ -26,7 +26,7 @@ translations = {
         "right": "오른쪽 모니터 (R)",
         "take": "스크린샷 찍기 (Alt+Z)",
         "open": "저장 폴더 열기 (Alt+O)",
-        "created": "Created by",
+        "create": "만든 이",
         "success": "스크린샷이 저장되었습니다!"
     },
     "Ελληνικά": {
@@ -41,7 +41,7 @@ translations = {
         "right": "Right Monitor (R)",
         "take": "Take Screenshots (Alt+Z)",
         "open": "Open the folder (Alt+O)",
-        "created": "Created by",
+        "create": "Created by",
         "success": "Screenshots Saved!"
     }
 }
