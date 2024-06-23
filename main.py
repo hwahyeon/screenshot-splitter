@@ -1,16 +1,15 @@
 import tkinter as tk
-from tkinter import IntVar, Label, Frame, messagebox, filedialog
+from tkinter import IntVar, Label, Frame, messagebox
 import mss
 import os
 import datetime
 from PIL import Image, ImageTk
 import time
-import webbrowser
-import platform
 from langs import get_text
 from database import init_db, save_setting, load_setting
-
-URL = "https://github.com/hwahyeon/py-screenshot-splitter"
+from about import show_about
+from folder import open_folder, change_folder_location
+import screenshot
 
 init_db()
 current_language = load_setting('current_language', 'English')
@@ -36,8 +35,7 @@ def update_ui_texts():
     left_monitor_check.config(text=get_text(current_language, "left"))
     right_monitor_check.config(text=get_text(current_language, "right"))
 
-def open_webpage(event=None):
-    webbrowser.open(URL)
+
 
 def check_left_monitor(event=None):
     left_monitor.set(not left_monitor.get())
@@ -85,23 +83,6 @@ def show_preview(img):
     preview_label.image = img_tk
     preview_label.pack(side=tk.LEFT, padx=10)
 
-def open_folder(event=None):
-    if platform.system() == "Windows":
-        os.startfile(save_folder)
-    elif platform.system() == "Darwin":  # macOS
-        os.system(f"open {save_folder}")
-    else:  # Linux
-        os.system(f"xdg-open {save_folder}")
-
-def change_folder_location():
-    global save_folder
-
-    folder_selected = filedialog.askdirectory()
-    if folder_selected:
-        save_folder = folder_selected
-        save_setting('save_folder', save_folder)
-        tk.messagebox.showinfo(get_text(current_language, "folder_change_title"),
-                               (get_text(current_language, "folder_change_cont") + '\n' + save_folder))
 
 def change_language():
     selected_language = lang_var.get()
@@ -110,24 +91,6 @@ def change_language():
 
 def on_exit():
     root.quit()
-
-def show_about():
-    about_window = tk.Toplevel(root)
-    about_window.title(get_text(current_language, "about"))
-    about_window.geometry("190x130")
-
-    about_label = tk.Label(about_window, text=("Screenshot Splitter\n"
-                                               "v 2.0.0\n"), justify="center")
-    about_label.pack(pady=10)
-
-    # "Created by"
-    created_label = tk.Label(about_window, text=get_text(current_language, "create"))
-    created_label.pack(side=tk.LEFT)
-
-    # "Name"
-    name_label = tk.Label(about_window, text="hwahyeon", fg="blue", cursor="hand2")
-    name_label.pack(side=tk.LEFT)
-    name_label.bind("<Button-1>", open_webpage)
 
 # GUI setting
 root = tk.Tk()
@@ -143,7 +106,7 @@ menu_bar = tk.Menu(root)
 
 # 'Settings' Menu
 settings_menu = tk.Menu(menu_bar, tearoff=0)
-settings_menu.add_command(label="Change save folder", command=change_folder_location)
+settings_menu.add_command(label="Change save folder", command=lambda: change_folder_location(save_folder, save_setting, current_language))
 
 # Language sub menu and check box
 lang_var = tk.StringVar(value="English")
@@ -162,7 +125,7 @@ menu_bar.add_cascade(label="Settings", menu=settings_menu)
 
 # 'Help' menu
 help_menu = tk.Menu(menu_bar, tearoff=0)
-help_menu.add_command(label="About", command=show_about)
+help_menu.add_command(label="About", command=lambda: show_about(root, current_language))
 menu_bar.add_cascade(label="Help", menu=help_menu)
 
 # Add menu bar
@@ -189,7 +152,7 @@ button1 = tk.Button(root, text="Take Screenshots (Alt+Z)", command=take_screensh
 button1.pack(pady=5)
 
 # Button (Open the folder)
-button2 = tk.Button(root, text="Open the folder (Alt+O)", command=open_folder)
+button2 = tk.Button(root, text="Open the folder (Alt+O)", command=lambda: open_folder(save_folder))
 button2.pack(pady=5)
 
 # Frame for 2 labels ("Created by" + "Name")
