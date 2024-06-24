@@ -1,7 +1,8 @@
 import tkinter as tk
-from meun import creat_menu
-from event import check_left_monitor, check_right_monitor, take_screenshots, open_folder, update_ui_texts
 from tkinter import IntVar, Frame
+from meun import create_menu
+from event import check_left_monitor, check_right_monitor, take_screenshots, open_folder, update_ui_texts
+
 
 def create_main_window(current_language, save_folder):
     # GUI setting
@@ -9,7 +10,8 @@ def create_main_window(current_language, save_folder):
     root.title("Screenshot Splitter")
     root.geometry("630x360")
 
-    creat_menu(root)
+    # create_menu(root)
+    menu_bar, help_menu, settings_menu = create_menu(root, current_language, save_folder)
 
     # Values for Checkbox
     left_monitor = IntVar()
@@ -24,24 +26,24 @@ def create_main_window(current_language, save_folder):
     # Binding for Shortcuts
     root.bind('<Alt-l>', lambda event: check_left_monitor(left_monitor))
     root.bind('<Alt-r>', lambda event: check_right_monitor(right_monitor))
-    root.bind('<Alt-z>', lambda event: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label, current_language))
+    root.bind('<Alt-z>',
+              lambda event: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label,
+                                             current_language))
     root.bind('<Alt-o>', lambda event: open_folder(save_folder))
 
     # Button (Take Screenshots)
     button1 = tk.Button(root, text="Take Screenshots (Alt+Z)",
-                        command=lambda: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label, current_language))
+                        command=lambda: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder,
+                                                         label, current_language))
     button1.pack(pady=5)
 
     # Button (Open the folder)
     button2 = tk.Button(root, text="Open the folder (Alt+O)", command=lambda: open_folder(save_folder))
     button2.pack(pady=5)
 
-    # Frame
-    label_frame = tk.Frame(root)
-    label_frame.pack(side=tk.BOTTOM)
-
+    # Preview Frame
     preview_frame = Frame(root)
-    preview_frame.pack(pady=20)
+    preview_frame.pack(pady=10)
 
     # Saved msg
     label = tk.Label(root, text="")
@@ -50,4 +52,4 @@ def create_main_window(current_language, save_folder):
     # UI text update
     update_ui_texts(button1, button2, left_monitor_check, right_monitor_check, current_language)
 
-    return root
+    return root, menu_bar, help_menu, settings_menu
