@@ -1,20 +1,17 @@
 import tkinter as tk
+from tkinter import messagebox
 from about import show_about
-from database import save_setting, load_setting
+from database import save_setting
 from langs import get_text
 from folder import change_folder_location
-import os
-
-save_folder = load_setting('save_folder', os.path.join(os.getcwd(), 'screenshots'))
-current_language = load_setting('current_language', 'English')
 
 
-def set_app_language(current_language):
+def set_app_language(current_language, menu_bar, help_menu, settings_menu):
     save_setting('current_language', current_language)
-    update_ui_menus(menu_bar, help_menu, settings_menu)
+    update_ui_menus(current_language, menu_bar, help_menu, settings_menu)
 
 
-def update_ui_menus(menu_bar, help_menu, settings_menu):
+def update_ui_menus(current_language, menu_bar, help_menu, settings_menu):
     # Menu
     menu_bar.entryconfig(1, label=get_text(current_language, "settings"))
     menu_bar.entryconfig(2, label=get_text(current_language, "help"))
@@ -24,14 +21,15 @@ def update_ui_menus(menu_bar, help_menu, settings_menu):
     settings_menu.entryconfig(3, label=get_text(current_language, "exit"))
 
 
-def change_language(lang_var):
+def change_language(lang_var, menu_bar, help_menu, settings_menu):
     selected_language = lang_var.get()
-    set_app_language(selected_language)
-    tk.messagebox.showinfo(get_text(current_language, "lang_change_title"),
-                           (get_text(current_language, "lang_change_cont") + selected_language))
+    current_language = selected_language
+    set_app_language(selected_language, menu_bar, help_menu, settings_menu)
+    messagebox.showinfo(get_text(current_language, "lang_change_title"),
+                        (get_text(current_language, "lang_change_cont") + selected_language))
 
 
-def creat_menu(root):
+def create_menu(root, current_language, save_folder):
     # Menu bar
     menu_bar = tk.Menu(root)
 
@@ -46,7 +44,8 @@ def creat_menu(root):
     languages = ["English", "한국어", "Ελληνικά"]
 
     for lang in languages:
-        language_menu.add_radiobutton(label=lang, variable=lang_var, value=lang, command=lambda: change_language(lang_var))
+        language_menu.add_radiobutton(label=lang, variable=lang_var, value=lang,
+                                      command=lambda: change_language(lang_var, menu_bar, help_menu, settings_menu))
 
     settings_menu.add_cascade(label="Language", menu=language_menu)
     settings_menu.add_separator()
@@ -62,6 +61,8 @@ def creat_menu(root):
 
     # Add menu bar
     root.config(menu=menu_bar)
+
+    return menu_bar, help_menu, settings_menu
 
 
 def on_exit(root):
