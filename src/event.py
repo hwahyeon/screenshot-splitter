@@ -1,4 +1,6 @@
 from langs import get_text
+from folder import open_folder
+from screenshot import take_screenshots
 
 
 def check_left_monitor(left_monitor):
