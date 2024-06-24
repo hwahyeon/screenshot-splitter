@@ -2,9 +2,12 @@ from tkinter import filedialog, messagebox
 import os
 import platform
 from langs import get_text
+from database import load_setting, save_setting
 
 
-def open_folder(save_folder, event=None):
+def open_folder(event=None):
+    save_folder = load_setting('save_folder')
+
     if platform.system() == "Windows":
         os.startfile(save_folder)
     elif platform.system() == "Darwin":
