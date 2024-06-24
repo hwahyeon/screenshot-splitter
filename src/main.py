@@ -18,7 +18,6 @@ class MainApp:
     def init_app_settings():
         init_app_settings()
 
-
     def set_language_value(self, value, language):
         if language is not None:
             language.set(value)

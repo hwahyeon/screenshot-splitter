@@ -4,7 +4,7 @@ from about import show_about
 from database import save_setting
 from langs import get_text
 from folder import change_folder_location
-from settings import init_app_settings, get_save_folder, get_current_language
+from settings import get_current_language
 
 
 def update_ui_lang_texts(buttons, language):

@@ -2,6 +2,8 @@ import sqlite3
 import os
 
 DB_PATH = os.path.join(os.path.dirname(__file__), '../config/settings.db')
+
+
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -42,4 +44,3 @@ def load_setting(key, default=None):
     result = c.fetchone()
     conn.close()
     return result[0] if result else default
-

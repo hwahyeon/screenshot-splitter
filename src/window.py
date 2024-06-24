@@ -29,8 +29,8 @@ def create_main_window(current_language, save_folder, toggle_language_callback):
     root.bind('<Alt-l>', lambda event: check_left_monitor(left_monitor))
     root.bind('<Alt-r>', lambda event: check_right_monitor(right_monitor))
     root.bind('<Alt-z>',
-              lambda event: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label,
-                                             current_language))
+              lambda event: take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label
+                                             ))
     root.bind('<Alt-o>', lambda event: open_folder(save_folder))
 
     # Button (Take Screenshots)
