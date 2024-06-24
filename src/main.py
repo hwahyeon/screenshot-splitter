@@ -11,12 +11,16 @@ class MainApp:
         self.save_folder = get_save_folder()
 
         init_db()
-        self.root, self.menu_bar, self.help_menu, self.settings_menu = create_main_window(self.current_language,
-                                                                                          self.save_folder)
+        self.root, self.language, self.menu_bar, self.help_menu, self.settings_menu = create_main_window(
+            self.current_language, self.save_folder, self.set_language_value)
 
     @staticmethod
     def init_app_settings():
         init_app_settings()
+
+    @staticmethod
+    def set_language_value(self, value, language):
+        language.set(value)
 
     def run(self):
         self.root.mainloop()

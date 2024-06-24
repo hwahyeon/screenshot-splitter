@@ -6,6 +6,12 @@ from langs import get_text
 from folder import change_folder_location
 
 
+def update_ui_lang_texts(buttons, language):
+    keys = ["take", "open", "left", "right"]
+    for button, key in zip(buttons, keys):
+        button.config(text=get_text(language, key))
+
+
 def set_app_language(current_language, menu_bar, help_menu, settings_menu):
     save_setting('current_language', current_language)
     update_ui_menus(current_language, menu_bar, help_menu, settings_menu)
@@ -21,15 +27,16 @@ def update_ui_menus(current_language, menu_bar, help_menu, settings_menu):
     settings_menu.entryconfig(3, label=get_text(current_language, "exit"))
 
 
-def change_language(lang_var, menu_bar, help_menu, settings_menu):
+def change_language(lang_var, menu_bar, help_menu, settings_menu, toggle_language_callback):
     selected_language = lang_var.get()
     current_language = selected_language
     set_app_language(selected_language, menu_bar, help_menu, settings_menu)
     messagebox.showinfo(get_text(current_language, "lang_change_title"),
                         (get_text(current_language, "lang_change_cont") + selected_language))
+    toggle_language_callback(selected_language)
 
 
-def create_menu(root, current_language, save_folder):
+def create_menu(root, current_language, save_folder, toggle_language_callback):
     # Menu bar
     menu_bar = tk.Menu(root)
 
@@ -45,7 +52,8 @@ def create_menu(root, current_language, save_folder):
 
     for lang in languages:
         language_menu.add_radiobutton(label=lang, variable=lang_var, value=lang,
-                                      command=lambda: change_language(lang_var, menu_bar, help_menu, settings_menu))
+                                      command=lambda: change_language(lang_var, menu_bar, help_menu, settings_menu,
+                                                                      toggle_language_callback))
 
     settings_menu.add_cascade(label="Language", menu=language_menu)
     settings_menu.add_separator()
