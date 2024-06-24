@@ -4,6 +4,7 @@ from about import show_about
 from database import save_setting
 from langs import get_text
 from folder import change_folder_location
+from settings import init_app_settings, get_save_folder, get_current_language
 
 
 def update_ui_lang_texts(buttons, language):
@@ -42,11 +43,11 @@ def create_menu(root, current_language, save_folder, toggle_language_callback):
 
     # 'Settings' Menu
     settings_menu = tk.Menu(menu_bar, tearoff=0)
-    settings_menu.add_command(label="Change save folder",
+    settings_menu.add_command(label=get_text(current_language, "folder"),
                               command=lambda: change_folder_location(save_folder, save_setting, current_language))
 
     # Language sub menu and check box
-    lang_var = tk.StringVar(value="English")
+    lang_var = tk.StringVar(value=get_current_language())
     language_menu = tk.Menu(settings_menu, tearoff=0)
     languages = ["English", "한국어", "Ελληνικά"]
 
@@ -55,17 +56,17 @@ def create_menu(root, current_language, save_folder, toggle_language_callback):
                                       command=lambda: change_language(lang_var, menu_bar, help_menu, settings_menu,
                                                                       toggle_language_callback))
 
-    settings_menu.add_cascade(label="Language", menu=language_menu)
+    settings_menu.add_cascade(label=get_text(current_language, "language"), menu=language_menu)
     settings_menu.add_separator()
-    settings_menu.add_command(label="Exit", command=lambda: on_exit(root))
+    settings_menu.add_command(label=get_text(current_language, "exit"), command=lambda: on_exit(root))
 
     # Add 'Settings' menu
-    menu_bar.add_cascade(label="Settings", menu=settings_menu)
+    menu_bar.add_cascade(label=get_text(current_language, "settings"), menu=settings_menu)
 
     # 'Help' menu
     help_menu = tk.Menu(menu_bar, tearoff=0)
-    help_menu.add_command(label="About", command=lambda: show_about(root, current_language))
-    menu_bar.add_cascade(label="Help", menu=help_menu)
+    help_menu.add_command(label=get_text(current_language, "about"), command=lambda: show_about(root, current_language))
+    menu_bar.add_cascade(label=get_text(current_language, "help"), menu=help_menu)
 
     # Add menu bar
     root.config(menu=menu_bar)
