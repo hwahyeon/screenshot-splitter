@@ -5,10 +5,11 @@ import mss
 from tkinter import Label, LEFT
 import os
 from langs import get_text
+from settings import get_current_language
 
-
-def take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label, current_language,
+def take_screenshots(root, preview_frame, left_monitor, right_monitor, save_folder, label,
                      event=None):
+    current_language = get_current_language()
     root.withdraw()
     time.sleep(0.5)
 
