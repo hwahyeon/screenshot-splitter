@@ -18,9 +18,10 @@ class MainApp:
     def init_app_settings():
         init_app_settings()
 
-    @staticmethod
+
     def set_language_value(self, value, language):
-        language.set(value)
+        if language is not None:
+            language.set(value)
 
     def run(self):
         self.root.mainloop()
