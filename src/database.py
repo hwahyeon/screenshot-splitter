@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 def init_db():
-    conn = sqlite3.connect('settings.db')
+    conn = sqlite3.connect('../config/settings.db')
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS settings (
@@ -20,7 +20,7 @@ def init_db():
 
 
 def save_setting(key, value):
-    conn = sqlite3.connect('settings.db')
+    conn = sqlite3.connect('../config/settings.db')
     c = conn.cursor()
     c.execute('''
         INSERT OR REPLACE INTO settings (key, value)
@@ -31,7 +31,7 @@ def save_setting(key, value):
 
 
 def load_setting(key, default=None):
-    conn = sqlite3.connect('settings.db')
+    conn = sqlite3.connect('../config/settings.db')
     c = conn.cursor()
     c.execute('''
         SELECT value FROM settings WHERE key = ?
@@ -39,3 +39,4 @@ def load_setting(key, default=None):
     result = c.fetchone()
     conn.close()
     return result[0] if result else default
+
