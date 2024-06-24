@@ -35,7 +35,7 @@ def take_screenshots(root, preview_frame, left_monitor, right_monitor, save_fold
 
     root.deiconify()
     label.config(text=get_text(current_language, "success"))
-    root.after(2000, clear_label(label))
+    root.after(2000, lambda: clear_label(label))
 
 
 def clear_label(label):
