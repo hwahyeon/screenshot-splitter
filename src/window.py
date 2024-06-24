@@ -7,7 +7,7 @@ def create_main_window(current_language, save_folder):
     # GUI setting
     root = tk.Tk()
     root.title("Screenshot Splitter")
-    root.geometry("630x340")
+    root.geometry("630x360")
 
     creat_menu(root)
 
