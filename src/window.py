@@ -8,7 +8,7 @@ def create_main_window(current_language, save_folder):
     # GUI setting
     root = tk.Tk()
     root.title("Screenshot Splitter")
-    root.geometry("630x360")
+    root.geometry("630x355")
 
     # create_menu(root)
     menu_bar, help_menu, settings_menu = create_menu(root, current_language, save_folder)
@@ -47,7 +47,7 @@ def create_main_window(current_language, save_folder):
 
     # Saved msg
     label = tk.Label(root, text="")
-    label.pack(pady=10)
+    label.pack(pady=5)
 
     # UI text update
     update_ui_texts(button1, button2, left_monitor_check, right_monitor_check, current_language)
