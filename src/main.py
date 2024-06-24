@@ -1,7 +1,7 @@
 from database import init_db
 from settings import init_app_settings, get_save_folder, get_current_language
 from window import create_main_window
-from meun import update_ui_menus
+from menu import update_ui_menus
 
 
 class MainApp:

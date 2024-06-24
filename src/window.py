@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import IntVar, Frame
-from meun import create_menu, update_ui_lang_texts
+from menu import create_menu, update_ui_lang_texts
 from event import check_left_monitor, check_right_monitor, take_screenshots, open_folder
 from langs import get_text
 
