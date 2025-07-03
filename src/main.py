@@ -6,7 +6,7 @@ from menu import update_ui_menus
 
 class MainApp:
     def __init__(self):
-        self.init_app_settings()
+        init_app_settings()
         self.current_language = get_current_language()
         self.save_folder = get_save_folder()
 
