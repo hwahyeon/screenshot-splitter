@@ -2,20 +2,22 @@
 
 ## Languages
 
-- [한국어](./docs/README-KO.md)
-- [Ελληνικά](./docs/README-EL.md)
+- [한국어](./docs/README.ko.md)
+- [Ελληνικά](./docs/README.el.md)
 
 ## Overview
 
-This is a screenshot program designed for dual monitors.
+Screenshot Splitter is a screenshot utility optimized for dual-monitor setups.
 
 ## Download
+[Version 2.0.0](https://github.com/hwahyeon/screenshot-splitter/releases/tag/v2.0.0)
 
-## How to use
+## How to Use
 
-![image](./docs/002.png)
+![image](https://raw.githubusercontent.com/hwahyeon/screenshot-splitter/refs/heads/readme/images/en.png)
 
-- When you run the `Screenshot Splitter.exe`, the screen will appear like the picture above.
-- When the file is executed, `screenshots` folder is created in the location of `Screenshot Splitter.exe`, and screenshots are saved there in chronological order.
-- You can choose to take a screenshot of only one of the dual monitors or both. Please check the appropriate checkbox.
-- Shortcut keys are provided.
+- Run `Screenshot Splitter.exe`. The interface will appear as shown above.
+- You can choose to capture only one monitor or both monitors by selecting the corresponding checkboxes.
+- The first time you run the program, a `settings.db` file is created in the same folder as `Screenshot Splitter.exe`. This file stores your language preference and the screenshot save location.
+- By default, a `screenshots` folder is created in the same location, and screenshots are saved there with timestamps. You can change the save location in the program settings.
+- Shortcut keys are available for quick access.
