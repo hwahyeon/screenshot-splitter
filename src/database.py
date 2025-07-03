@@ -1,7 +1,13 @@
 import sqlite3
 import os
+import sys
 
-DB_PATH = os.path.join(os.path.dirname(__file__), '../config/settings.db')
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(__file__)
+
+DB_PATH = os.path.join(BASE_DIR, 'settings.db')
 
 
 def init_db():

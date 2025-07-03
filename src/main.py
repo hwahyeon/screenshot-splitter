@@ -6,17 +6,13 @@ from menu import update_ui_menus
 
 class MainApp:
     def __init__(self):
-        self.init_app_settings()
+        init_app_settings()
         self.current_language = get_current_language()
         self.save_folder = get_save_folder()
 
         init_db()
         self.root, self.language, self.menu_bar, self.help_menu, self.settings_menu = create_main_window(
             self.current_language, self.save_folder, self.set_language_value)
-
-    @staticmethod
-    def init_app_settings():
-        init_app_settings()
 
     def set_language_value(self, value, language):
         if language is not None:
