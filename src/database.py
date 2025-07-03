@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), '../config/settings.db')
+DB_PATH = os.path.join(os.path.dirname(__file__), 'settings.db')
 
 
 def init_db():
